@@ -1,5 +1,9 @@
 package com.example.flow.di
 
+import android.content.Context
+import androidx.room.Room
+import com.example.flow.data.local.AppDatabase
+import com.example.flow.data.local.NotesDao
 import com.example.flow.data.remote.ApiService
 import com.example.flow.data.repository.JokeRepoImpl
 import com.example.flow.domain.repository.JokeRepo
@@ -8,6 +12,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -41,7 +46,16 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRoomDatabase(){
-
+    fun provideDatabaseInstance(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "App Database").build()
     }
+
+    @Provides
+    @Singleton
+    fun provideDeveloperDao(database: AppDatabase): NotesDao {
+        return database.notesDao()
+    }
+
+
+
 }
