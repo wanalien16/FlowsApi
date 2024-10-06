@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.flow.ui.viewmodels.AddTaskViewModel
 
 @Composable
 fun AddTaskScreen() {
@@ -25,6 +27,7 @@ fun AddTaskScreen() {
     var taskDescription by remember {
         mutableStateOf("")
     }
+    val viewModel : AddTaskViewModel = hiltViewModel()
 
     Column(
         modifier = Modifier
@@ -40,7 +43,7 @@ fun AddTaskScreen() {
         Spacer(modifier = Modifier.padding(5.dp))
         TextField(value = taskDescription, onValueChange = { taskDescription = it })
         Spacer(modifier = Modifier.padding(10.dp))
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {viewModel.insertTask(taskName =taskName, taskDescription = taskDescription)}) {
             Text(text = "Save")
         }
 
